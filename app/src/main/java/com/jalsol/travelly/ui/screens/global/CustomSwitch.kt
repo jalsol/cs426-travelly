@@ -1,5 +1,7 @@
 package com.jalsol.travelly.ui.screens.global
 
+import android.content.res.Configuration
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -12,13 +14,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
+import com.jalsol.travelly.ui.theme.teal
+import com.jalsol.travelly.ui.theme.textColor
 
 @Composable
 fun CustomSwitch(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
-    colorChecked: Color = Color(0xFF089083),
-    colorUnchecked: Color = Color.White,
+    colorChecked: Color = teal(isSystemInDarkTheme()),
+    colorUnchecked: Color = textColor(!isSystemInDarkTheme()),
     modifier: Modifier = Modifier,
     shape: Shape = ButtonDefaults.shape,
     content: @Composable () -> Unit
@@ -44,7 +48,11 @@ fun CustomSwitch(
     }
 }
 
-@Preview
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF202020,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 fun CustomSwitchPreview() {
     var checked by remember { mutableStateOf(true) }

@@ -1,6 +1,8 @@
 package com.jalsol.travelly.ui.screens
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import com.jalsol.travelly.R
 import com.jalsol.travelly.ui.Routes
 import com.jalsol.travelly.ui.screens.global.Ticket
+import com.jalsol.travelly.ui.theme.textColor
 
 private data class Entry(
     val title: String,
@@ -47,7 +50,8 @@ fun BookingScreen(navHostController: NavHostController) {
             Text(
                 text = "Booking",
                 fontWeight = FontWeight.Medium,
-                fontSize = 18.sp
+                fontSize = 18.sp,
+                color = textColor(isSystemInDarkTheme())
             )
         }
 
@@ -64,7 +68,8 @@ fun BookingScreen(navHostController: NavHostController) {
                         Text(
                             text = it.title,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp
+                            fontSize = 18.sp,
+                            color = textColor(isSystemInDarkTheme())
                         )
                      },
                     onClick = it.onClick,
@@ -75,7 +80,11 @@ fun BookingScreen(navHostController: NavHostController) {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF202020,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 private fun BookingScreenPreview() {
     val navHostController = rememberNavController()

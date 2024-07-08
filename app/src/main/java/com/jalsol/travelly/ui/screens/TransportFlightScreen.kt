@@ -1,9 +1,9 @@
 package com.jalsol.travelly.ui.screens
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -16,14 +16,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,9 +35,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.jalsol.travelly.R
 import com.jalsol.travelly.ui.Routes
+import com.jalsol.travelly.ui.screens.global.HeaderBar
 import com.jalsol.travelly.ui.screens.global.LinearDatePicker
 import com.jalsol.travelly.ui.screens.global.Ticket
 import com.jalsol.travelly.ui.screens.global.rememberLinearDatePickerState
+import com.jalsol.travelly.ui.theme.teal
+import com.jalsol.travelly.ui.theme.textColor
 import com.jalsol.travelly.viewmodel.TransportFlightVM
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
@@ -61,24 +60,10 @@ fun TransportFlightScreen(
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            Row(modifier = Modifier.align(Alignment.CenterStart)) {
-                Icon(
-                    modifier = Modifier.clickable(onClick = { navHostController.navigateUp() }),
-                    imageVector = Icons.Filled.KeyboardArrowLeft,
-                    contentDescription = "Back Arrow"
-                )
-            }
-            Text(
-                text = "Flights",
-                fontWeight = FontWeight.Medium,
-                fontSize = 18.sp,
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
+        HeaderBar(
+            navHostController = navHostController,
+            title = "Flights"
+        )
 
         val state = rememberLinearDatePickerState(LocalDate.parse(args.date))
         val flights by TransportFlightVM.flights.collectAsState()
@@ -90,15 +75,6 @@ fun TransportFlightScreen(
                 date = args.date
             )
         }
-
-//        DisposableEffect(Unit) {
-//            TransportFlightVM.updateFlights(
-//                origin = args.fromCode,
-//                destination = args.toCode,
-//                date = args.date
-//            )
-//            onDispose { }
-//        }
 
         LinearDatePicker(
             state = state,
@@ -116,7 +92,10 @@ fun TransportFlightScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = "${flights.size} flights available from ${args.fromCode} to ${args.toCode}")
+            Text(
+                text = "${flights.size} flights available from ${args.fromCode} to ${args.toCode}",
+                color = textColor(isSystemInDarkTheme())
+            )
             Button(
                 modifier = Modifier
                     .height(40.dp)
@@ -205,7 +184,20 @@ fun TransportFlightScreen(
                     topRatio = 1f,
                     bottomRatio = 1f,
                     middleRatio = 1f,
-                    onClick = {},
+                    onClick = {
+                        navHostController.navigate(Routes.Transport.Seats(
+                            from = args.from,
+                            fromCode = args.fromCode,
+                            to = args.to,
+                            toCode = args.toCode,
+                            date = args.date,
+                            time = departure.time,
+                            passengers = args.passengers,
+                            classType = args.classType,
+                            price = 50f,
+                            flightNumber = it.flightNumber
+                        ))
+                    },
                     height = 120.dp
                 )
             }
@@ -214,7 +206,7 @@ fun TransportFlightScreen(
 }
 
 @Composable
-private fun Tag(modifier: Modifier = Modifier, label: String, content: String) {
+fun Tag(modifier: Modifier = Modifier, label: String, content: String) {
     Column(
         modifier = modifier.fillMaxHeight(),
         verticalArrangement = Arrangement.Center
@@ -222,12 +214,11 @@ private fun Tag(modifier: Modifier = Modifier, label: String, content: String) {
         Text(
             text = label,
             fontSize = 10.sp,
-            color = Color(0xFF01635D)
+            color = teal(!isSystemInDarkTheme())
         )
         Text(
             text = content,
-//            fontSize = 16.sp,
-            fontWeight = FontWeight.Medium
+            color = textColor(isSystemInDarkTheme())
         )
     }
 }
@@ -238,7 +229,11 @@ private fun TagTest() {
      Tag(label = "NYC", content = "New York")
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF202020,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 private fun TransportFlightScreenPreview() {
     val navHostController = rememberNavController()

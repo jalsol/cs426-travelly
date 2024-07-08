@@ -4,6 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.jalsol.travelly.R
+import com.jalsol.travelly.ui.theme.backgroundColor
 
 @Composable
 fun Dp.toPx() = with(LocalDensity.current) { this@toPx.toPx() }
@@ -57,13 +59,13 @@ fun Ticket(
                 .fillMaxWidth()
                 .weight(topRatio)
                 .clip(TicketTopShape(10.dp.toPx()))
-                .background(color = Color.White),
+                .background(color = backgroundColor(isSystemInDarkTheme())),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             top()
         }
 
-        DottedLine()
+        DottedLine(isSystemInDarkTheme())
 
         if (middle != null && middleRatio != null) {
             Column(
@@ -71,13 +73,13 @@ fun Ticket(
                     .fillMaxWidth()
                     .weight(middleRatio)
                     .clip(TicketMiddleShape(10.dp.toPx()))
-                    .background(color = Color.White),
+                    .background(color = backgroundColor(isSystemInDarkTheme())),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 middle()
             }
 
-            DottedLine()
+            DottedLine(isSystemInDarkTheme())
         }
 
         Column(
@@ -85,7 +87,7 @@ fun Ticket(
                 .fillMaxWidth()
                 .weight(bottomRatio)
                 .clip(TicketBottomShape(10.dp.toPx()))
-                .background(color = Color.White),
+                .background(color = backgroundColor(isSystemInDarkTheme())),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -95,7 +97,7 @@ fun Ticket(
 }
 
 @Composable
-private fun DottedLine() {
+private fun DottedLine(isDarkTheme: Boolean) {
     Canvas(
         Modifier
             .fillMaxWidth()
@@ -103,7 +105,7 @@ private fun DottedLine() {
     ) {
         val pathEffect = PathEffect.dashPathEffect(floatArrayOf(20f, 20f), 0f)
         drawLine(
-            color = Color.Black,
+            color = if (isDarkTheme) Color.White else Color.Black,
             start = Offset(10.dp.toPx(), 0f),
             end = Offset(size.width - 10.dp.toPx(), 0f),
             strokeWidth = 5f,

@@ -7,6 +7,12 @@ object Routes {
     object Empty
 
     @Serializable
+    object Login
+
+    @Serializable
+    object Signup
+
+    @Serializable
     object Home
 
     @Serializable
@@ -37,5 +43,33 @@ object Routes {
 
         @Serializable
         object Filter
+
+        @Serializable
+        data class Seats(
+            val from: String,
+            val fromCode: String,
+            val to: String,
+            val toCode: String,
+            val date: String,
+            val time: String,
+            val passengers: Int,
+            val classType: String,
+            val price: Float,
+            val flightNumber: String
+        )
+
+        @Serializable
+        data class BoardingPass(
+            val from: String,
+            val fromCode: String,
+            val to: String,
+            val toCode: String,
+            val date: String,
+            val time: String,
+            val classType: String,
+            val price: Float,
+            val flightNumber: String,
+            val seats: List<String>
+        )
     }
 }

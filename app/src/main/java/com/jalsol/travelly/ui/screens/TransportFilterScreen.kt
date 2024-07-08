@@ -1,8 +1,9 @@
 package com.jalsol.travelly.ui.screens
 
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,8 +15,6 @@ import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -45,7 +44,10 @@ import androidx.navigation.compose.rememberNavController
 import com.jalsol.travelly.R
 import com.jalsol.travelly.ui.screens.global.CustomSwitch
 import com.jalsol.travelly.ui.screens.global.CustomTextField
+import com.jalsol.travelly.ui.screens.global.HeaderBar
 import com.jalsol.travelly.ui.screens.global.RadioSelection
+import com.jalsol.travelly.ui.theme.peach
+import com.jalsol.travelly.ui.theme.textColor
 import com.jalsol.travelly.viewmodel.TransportFlightVM
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -63,24 +65,10 @@ fun TransportFilterScreen(
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            Row(modifier = Modifier.align(Alignment.CenterStart)) {
-                Icon(
-                    modifier = Modifier.clickable(onClick = { navHostController.navigateUp() }),
-                    imageVector = Icons.Filled.KeyboardArrowLeft,
-                    contentDescription = "Back Arrow"
-                )
-            }
-            Text(
-                text = "Filter",
-                fontWeight = FontWeight.Medium,
-                fontSize = 18.sp,
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
+        HeaderBar(
+            navHostController = navHostController,
+            title = "Filter"
+        )
 
         val timeRange = listOf(
             "12AM - 06AM",
@@ -95,7 +83,8 @@ fun TransportFilterScreen(
         Text(
             text = "Departure",
             fontWeight = FontWeight.Medium,
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            color = textColor(isSystemInDarkTheme())
         )
 
         var departureSelected by remember { mutableIntStateOf(-1) }
@@ -108,7 +97,8 @@ fun TransportFilterScreen(
         Text(
             text = "Arrival",
             fontWeight = FontWeight.Medium,
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            color = textColor(isSystemInDarkTheme())
         )
 
         var arrivalSelected by remember { mutableIntStateOf(-1) }
@@ -121,7 +111,8 @@ fun TransportFilterScreen(
         Text(
             text = "Price",
             fontWeight = FontWeight.Medium,
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            color = textColor(isSystemInDarkTheme())
         )
 
         var sliderPosition by remember { mutableStateOf(50f..250f) }
@@ -165,7 +156,7 @@ fun TransportFilterScreen(
                     label = { Text(text = "From") },
                     modifier = Modifier
                         .weight(1f)
-                        .onFocusChanged {  focusState ->
+                        .onFocusChanged { focusState ->
                             if (!focusState.isFocused) {
                                 sliderPosition = try {
                                     inputStart.toFloat()..inputEnd.toFloat()
@@ -204,7 +195,8 @@ fun TransportFilterScreen(
         Text(
             text = "Facilities",
             fontWeight = FontWeight.Medium,
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            color = textColor(isSystemInDarkTheme())
         )
 
         val facilities = listOf(
@@ -235,7 +227,8 @@ fun TransportFilterScreen(
         Text(
             text = "Sort by",
             fontWeight = FontWeight.Medium,
-            fontSize = 16.sp
+            fontSize = 16.sp,
+            color = textColor(isSystemInDarkTheme())
         )
 
         var sortByState by remember { mutableIntStateOf(0) }
@@ -268,7 +261,8 @@ fun TransportFilterScreen(
                     )
                     Text(
                         text = label,
-                        modifier = Modifier.padding(start = 8.dp)
+                        modifier = Modifier.padding(start = 8.dp),
+                        color = textColor(isSystemInDarkTheme())
                     )
                 }
             }
@@ -282,8 +276,8 @@ fun TransportFilterScreen(
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(15.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.White,
-                    contentColor = Color(0xFFFEA36B),
+                    containerColor = textColor(!isSystemInDarkTheme()),
+                    contentColor = peach(isSystemInDarkTheme()),
                 ),
                 onClick = {
                     departureSelected = -1
@@ -299,7 +293,7 @@ fun TransportFilterScreen(
                 Text(
                     text = "Reset",
                     fontWeight = FontWeight.Medium,
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
                 )
             }
 
@@ -307,7 +301,8 @@ fun TransportFilterScreen(
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(15.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFFEA36B)
+                    containerColor = peach(isSystemInDarkTheme()),
+                    contentColor = textColor(!isSystemInDarkTheme()),
                 ),
                 onClick = {
                     TransportFlightVM.resetFilters()
@@ -354,7 +349,11 @@ fun TransportFilterScreen(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF202020,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 private fun TransportFilterScreenPreview() {
     val navHostController = rememberNavController()

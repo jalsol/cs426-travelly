@@ -1,6 +1,7 @@
 package com.jalsol.travelly.ui.screens
 
-import androidx.compose.foundation.clickable
+import android.content.res.Configuration
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,8 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -44,8 +43,11 @@ import com.jalsol.travelly.R
 import com.jalsol.travelly.ui.Routes
 import com.jalsol.travelly.ui.screens.global.DateField
 import com.jalsol.travelly.ui.screens.global.DropDownList
+import com.jalsol.travelly.ui.screens.global.HeaderBar
 import com.jalsol.travelly.ui.screens.global.RadioSelection
 import com.jalsol.travelly.ui.screens.global.TransparentTextField
+import com.jalsol.travelly.ui.theme.peach
+import com.jalsol.travelly.ui.theme.textColor
 import com.jalsol.travelly.viewmodel.TransportBookingVM
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -61,23 +63,10 @@ fun TransportBookingScreen(navHostController: NavHostController) {
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-            Row(modifier = Modifier.align(Alignment.CenterStart)) {
-                Icon(
-                    modifier = Modifier.clickable(onClick = { navHostController.navigateUp() }),
-                    imageVector = Icons.Filled.KeyboardArrowLeft,
-                    contentDescription = "Back Arrow"
-                )
-            }
-            Text(
-                text = "Transport Booking",
-                fontWeight = FontWeight.Medium,
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
+        HeaderBar(
+            navHostController = navHostController,
+            title = "Transport Booking"
+        )
 
         var inputFrom by remember { mutableStateOf("") }
         var inputTo by remember { mutableStateOf("") }
@@ -117,7 +106,8 @@ fun TransportBookingScreen(navHostController: NavHostController) {
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.logo_swap),
-                    contentDescription = "Swap"
+                    contentDescription = "Swap",
+                    tint = textColor(!isSystemInDarkTheme())
                 )
             }
         }
@@ -149,7 +139,10 @@ fun TransportBookingScreen(navHostController: NavHostController) {
             }
         }
 
-        Text("Passenger & Luggage")
+        Text(
+            "Passenger & Luggage",
+            color = textColor(isSystemInDarkTheme())
+        )
 
         var adults by remember { mutableStateOf("") }
         var children by remember { mutableStateOf("") }
@@ -202,7 +195,10 @@ fun TransportBookingScreen(navHostController: NavHostController) {
             )
         }
 
-        Text("Class")
+        Text(
+            "Class",
+            color = textColor(isSystemInDarkTheme())
+        )
         val classLabels = listOf("Economy", "Business")
         val classComposables: List<@Composable (() -> Unit)> = classLabels.map {
             { Text(text = it) }
@@ -214,7 +210,10 @@ fun TransportBookingScreen(navHostController: NavHostController) {
             composables = classComposables
         )
 
-        Text("Transport")
+        Text(
+            "Transport",
+            color = textColor(isSystemInDarkTheme())
+        )
         val transportComposables: List<@Composable (() -> Unit)> = listOf(
             {
                 Icon(
@@ -252,7 +251,7 @@ fun TransportBookingScreen(navHostController: NavHostController) {
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(15.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFFFEA36B)
+                containerColor = peach(isSystemInDarkTheme())
             ),
             onClick = {
                 val fromIndex = airportsLabel.indexOfFirst { it == inputFrom }
@@ -282,13 +281,18 @@ fun TransportBookingScreen(navHostController: NavHostController) {
             Text(
                 text = "Search",
                 fontSize = 18.sp,
-                fontWeight = FontWeight.Medium
+                fontWeight = FontWeight.Medium,
+                color = textColor(!isSystemInDarkTheme())
             )
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF202020,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 private fun TransportBookingScreenPreview() {
     val navHostController = rememberNavController()

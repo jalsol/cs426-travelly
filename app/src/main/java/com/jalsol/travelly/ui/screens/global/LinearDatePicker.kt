@@ -3,6 +3,7 @@ package com.jalsol.travelly.ui.screens.global
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
@@ -28,10 +29,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.jalsol.travelly.ui.theme.peach
+import com.jalsol.travelly.ui.theme.textColor
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -185,7 +187,7 @@ private fun DateCard(
             .clip(shape = RoundedCornerShape(16.dp))
             .then(
                 if (isSelected) {
-                    Modifier.background(Color(0xFFFFDDA2))
+                    Modifier.background(peach(isSystemInDarkTheme()))
                 } else {
                     Modifier
                 },
@@ -196,16 +198,23 @@ private fun DateCard(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         // Month
-        Text(text = date.month.getDisplayName(TextStyle.SHORT, Locale.ENGLISH).uppercase())
+        Text(
+            text = date.month.getDisplayName(TextStyle.SHORT, Locale.ENGLISH).uppercase(),
+            color = textColor(isSystemInDarkTheme())
+        )
 
         // Day of month
         Text(
             text = date.dayOfMonth.toString(),
             fontWeight = FontWeight.ExtraBold,
             fontSize = 24.sp,
+            color = textColor(isSystemInDarkTheme())
         )
 
         // Day of week
-        Text(text = date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.ENGLISH).uppercase())
+        Text(
+            text = date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.ENGLISH).uppercase(),
+            color = textColor(isSystemInDarkTheme())
+        )
     }
 }

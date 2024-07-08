@@ -1,5 +1,7 @@
 package com.jalsol.travelly.ui.screens.global
 
+import android.content.res.Configuration
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
@@ -20,6 +22,8 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.jalsol.travelly.ui.theme.backgroundColor
+import com.jalsol.travelly.ui.theme.textColor
 
 @Composable
 fun CustomTextField(
@@ -42,23 +46,32 @@ fun CustomTextField(
         readOnly = readOnly,
         enabled = enabled,
         colors = TextFieldDefaults.colors(
-            focusedContainerColor = Color.White,
-            unfocusedContainerColor = Color.White,
+            focusedContainerColor = backgroundColor(isSystemInDarkTheme()),
+            unfocusedContainerColor = backgroundColor(isSystemInDarkTheme()),
+            disabledContainerColor = backgroundColor(isSystemInDarkTheme()),
             focusedLabelColor = Color.Gray,
             unfocusedLabelColor = Color.Gray,
-            disabledContainerColor = Color.White,
             disabledLabelColor = Color.Gray,
-            disabledTextColor = Color.Black,
+            focusedTextColor = textColor(isSystemInDarkTheme()),
+            unfocusedTextColor = textColor(isSystemInDarkTheme()),
+            disabledTextColor = textColor(isSystemInDarkTheme()),
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent
+            disabledIndicatorColor = Color.Transparent,
+            focusedPrefixColor = textColor(isSystemInDarkTheme()),
+            unfocusedPrefixColor = textColor(isSystemInDarkTheme()),
+            disabledPrefixColor = textColor(isSystemInDarkTheme())
         ),
         keyboardOptions = keyboardOptions,
         visualTransformation = visualTransformation
     )
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF202020,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 private fun CustomTextFieldTest() {
     var text by remember { mutableStateOf("something") }
@@ -66,7 +79,8 @@ private fun CustomTextFieldTest() {
         value = text,
         onValueChange = { text = it },
         label = { Text(text = "Your Label Here") },
-        readOnly = true
+        readOnly = true,
+        enabled = false
     )
 }
 

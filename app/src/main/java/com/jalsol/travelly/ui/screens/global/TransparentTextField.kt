@@ -1,5 +1,7 @@
 package com.jalsol.travelly.ui.screens.global
 
+import android.content.res.Configuration
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -21,6 +23,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.jalsol.travelly.ui.theme.teal
+import com.jalsol.travelly.ui.theme.textColor
 
 @Composable
 fun TransparentTextField(
@@ -39,12 +43,13 @@ fun TransparentTextField(
         colors = TextFieldDefaults.colors(
             focusedContainerColor = Color.Transparent,
             unfocusedContainerColor = Color.Transparent,
-            focusedLabelColor = Color.Gray,
-            unfocusedLabelColor = Color.Gray,
-            focusedIndicatorColor = Color(0xFF01635D),
-            focusedPrefixColor = Color(0xFF01635D),
-            unfocusedLeadingIconColor = Color.Gray,
-            focusedTextColor = Color(0xFF01635D),
+            focusedLabelColor = textColor(isSystemInDarkTheme()),
+            unfocusedLabelColor = textColor(isSystemInDarkTheme()),
+            focusedIndicatorColor = teal(!isSystemInDarkTheme()),
+            focusedPrefixColor = teal(!isSystemInDarkTheme()),
+            unfocusedPrefixColor = textColor(isSystemInDarkTheme()),
+            focusedTextColor = teal(!isSystemInDarkTheme()),
+            unfocusedTextColor = textColor(isSystemInDarkTheme()),
         ),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         textStyle = LocalTextStyle.current.copy(
@@ -54,7 +59,11 @@ fun TransparentTextField(
     )
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF202020,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 private fun TransparentTextFieldTest() {
     var text by remember { mutableStateOf("something") }

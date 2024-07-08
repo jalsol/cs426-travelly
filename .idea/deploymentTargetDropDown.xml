@@ -2,13 +2,19 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="TransportBookingScreenPreview">
+      <entry key="AccountProfileScreenPreview">
         <State />
       </entry>
       <entry key="TransportFilterScreenPreview">
         <State />
       </entry>
       <entry key="TransportFlightScreenPreview">
+        <State />
+      </entry>
+      <entry key="TransportSeatsScreenPreview">
+        <State />
+      </entry>
+      <entry key="TravellyApp">
         <State />
       </entry>
       <entry key="app">

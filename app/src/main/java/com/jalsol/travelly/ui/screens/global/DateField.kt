@@ -1,5 +1,6 @@
 package com.jalsol.travelly.ui.screens.global
 
+import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -102,7 +103,11 @@ private fun ShowDateDialog(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF202020,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 private fun DatePickerPreview() {
     val datePickerState = rememberDatePickerState()

@@ -9,6 +9,7 @@ import com.jalsol.travelly.ui.theme.TravellyTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        actionBar?.hide();
         setContent {
             TravellyTheme {
                 TravellyApp()

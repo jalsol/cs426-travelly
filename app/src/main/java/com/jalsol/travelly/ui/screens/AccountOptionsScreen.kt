@@ -1,6 +1,8 @@
 package com.jalsol.travelly.ui.screens
 
-import androidx.compose.foundation.Image
+import android.content.res.Configuration
+import android.widget.Toast
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,10 +20,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,10 +34,17 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.jalsol.travelly.R
+import com.jalsol.travelly.domain.model.Base64StringToImage
+import com.jalsol.travelly.domain.model.Preferences
+import com.jalsol.travelly.domain.serializer.dataStore
 import com.jalsol.travelly.ui.Routes
+import com.jalsol.travelly.ui.theme.textColor
 
 @Composable
 fun AccountOptionsScreen(navHostController: NavHostController) {
+    val preferences = navHostController.context.dataStore.data.collectAsState(
+        initial = Preferences()
+    ).value
     Column(
         modifier = Modifier
             .padding(top = 16.dp)
@@ -48,12 +59,12 @@ fun AccountOptionsScreen(navHostController: NavHostController) {
             Text(
                 text = "Account",
                 fontWeight = FontWeight.Medium,
-                fontSize = 18.sp
+                fontSize = 18.sp,
+                color = textColor(isSystemInDarkTheme())
             )
 
-            Image(
-                painter = painterResource(id = R.drawable.avatar),
-                contentDescription = null,
+            Base64StringToImage(
+                base64String = preferences.avatarBase64,
                 modifier = Modifier
                     .padding(8.dp)
                     .shadow(8.dp)
@@ -62,13 +73,15 @@ fun AccountOptionsScreen(navHostController: NavHostController) {
             )
 
             Text(
-                text = "Victoria Yoker",
+                text = "${preferences.firstName} ${preferences.lastName}",
                 fontWeight = FontWeight.Medium,
-                fontSize = 18.sp
+                fontSize = 18.sp,
+                color = textColor(isSystemInDarkTheme())
             )
         }
 
         Column {
+            val context = LocalContext.current
             OptionButton(
                 resId = R.drawable.logo_person_thick,
                 label = "Personal information",
@@ -77,19 +90,23 @@ fun AccountOptionsScreen(navHostController: NavHostController) {
             OptionButton(
                 resId = R.drawable.logo_creditcard,
                 label = "Payment and cards",
-            ) { }
+                onClick = { Toast.makeText(context, "Will be developed", Toast.LENGTH_SHORT).show() }
+            )
             OptionButton(
                 resId = R.drawable.logo_heart,
                 label = "Saved",
-            ) { }
+                onClick = { Toast.makeText(context, "Will be developed", Toast.LENGTH_SHORT).show() }
+            )
             OptionButton(
                 resId = R.drawable.logo_history,
                 label = "Booking history",
-            ) { }
+                onClick = { Toast.makeText(context, "Will be developed", Toast.LENGTH_SHORT).show() }
+            )
             OptionButton(
                 resId = R.drawable.logo_settings,
                 label = "Settings",
-            ) { }
+                onClick = { Toast.makeText(context, "Will be developed", Toast.LENGTH_SHORT).show() }
+            )
         }
 
         Spacer(modifier = Modifier.weight(1f))
@@ -137,12 +154,16 @@ private fun OptionButton(
         )
         Text(
             text = label,
-            color = Color.Black
+            color = textColor(isSystemInDarkTheme())
         )
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF202020,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 private fun AccountOptionsScreenPreview() {
     val navHostController = rememberNavController()

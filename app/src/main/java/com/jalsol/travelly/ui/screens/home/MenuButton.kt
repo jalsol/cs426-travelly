@@ -1,5 +1,6 @@
 package com.jalsol.travelly.ui.screens.home
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
@@ -12,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.jalsol.travelly.ui.theme.textColor
 
 @Composable
 fun MenuButton(
@@ -36,6 +38,7 @@ fun MenuButton(
         }
         Text(
             text = label,
+            color = textColor(isSystemInDarkTheme())
         )
     }
 }

@@ -1,6 +1,8 @@
 package com.jalsol.travelly.ui.screens.global
 
+import android.content.res.Configuration
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
@@ -15,9 +17,10 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.jalsol.travelly.ui.theme.teal
+import com.jalsol.travelly.ui.theme.textColor
 
 @Composable
 fun RadioSelection(
@@ -35,14 +38,14 @@ fun RadioSelection(
                 onClick = { onSelectionChange(index) },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = if (selected == index) {
-                        Color(0xFF089083)
+                        teal(isSystemInDarkTheme())
                     } else {
-                        Color.White
+                        textColor(!isSystemInDarkTheme())
                     },
                     contentColor = if (selected == index) {
-                        Color.White
+                        textColor(!isSystemInDarkTheme())
                     } else {
-                        Color(0xFF089083)
+                        teal(isSystemInDarkTheme())
                     }
                 )
             ) {
@@ -56,7 +59,11 @@ fun RadioSelection(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF202020,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
 private fun RadioSelectionTest() {
     val composables: List<@Composable (() -> Unit)> = listOf(

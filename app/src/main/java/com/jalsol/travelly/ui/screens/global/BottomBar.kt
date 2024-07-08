@@ -1,5 +1,7 @@
 package com.jalsol.travelly.ui.screens.global
 
+import android.content.res.Configuration
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,14 +19,18 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.jalsol.travelly.R
 import com.jalsol.travelly.ui.Routes
+import com.jalsol.travelly.ui.theme.backgroundColor
+import com.jalsol.travelly.ui.theme.peach
+import com.jalsol.travelly.ui.theme.textColor
 
 
 private data class BottomBarItem(
@@ -63,7 +69,7 @@ fun BottomBar(navController: NavHostController) {
                 shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)
                 shadowElevation = 200f
             },
-        containerColor = Color.White,
+        containerColor = backgroundColor(isSystemInDarkTheme()),
     ) {
         bottomBarItems.forEachIndexed { index, item ->
             NavigationBarItem(
@@ -74,19 +80,21 @@ fun BottomBar(navController: NavHostController) {
                 },
                 modifier = Modifier.weight(if (selected == index) 2f else 1f),
                 colors = NavigationBarItemDefaults.colors(
-                    indicatorColor = Color(0xFFFFDDA2),
+                    indicatorColor = peach(isSystemInDarkTheme()),
                 ),
                 icon = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             painter = painterResource(id = item.resId),
-                            contentDescription = item.label
+                            contentDescription = item.label,
+                            tint = textColor(isSystemInDarkTheme())
                         )
                         if (selected == index) {
                             Spacer(modifier = Modifier.width(5.dp))
                             Text(
                                 text = item.label,
-                                fontWeight = FontWeight.Medium
+                                fontWeight = FontWeight.Medium,
+                                color = textColor(isSystemInDarkTheme())
                             )
                         }
                     }
@@ -94,4 +102,15 @@ fun BottomBar(navController: NavHostController) {
             )
         }
     }
+}
+
+@Preview(
+    showBackground = true,
+    backgroundColor = 0xFF202020,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun BottomBarPreview() {
+    val navHostController = rememberNavController()
+    BottomBar(navController = navHostController)
 }
